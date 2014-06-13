@@ -21,9 +21,36 @@ def merge(line):
     """
     Helper function that merges a single row or column in 2048
     """
-    # replace with your code
-    return []
+    # Generate target list to copy with 0 number
+    result_idx = 0
+    result = [0] * len(line)
 
+    # copying only the numbers w/o zeros
+    for cell in line:
+        if cell != 0:
+            result[result_idx] = cell
+            result_idx += 1
+    
+    # merging equal close numbers
+    for i in range (0, len(result)-1 ):
+        if result[i] == result[i+1]:
+            result[i] = result[i] + result[i+1]
+            result[i+1] = 0
+            
+    # copying only the numbers w/o zeros
+    temp = [0] * len(result)
+    temp_idx = 0
+    
+    for cell in result:
+        if cell != 0:
+            temp[temp_idx] = cell
+            temp_idx += 1
+    
+    result = list(temp)
+    
+    return result   
+    
+    
 class TwentyFortyEight:
     """
     Class to run the game logic.
@@ -90,7 +117,8 @@ class TwentyFortyEight:
         Return the value of the tile at position row, col.
         """        
         # replace with your code
-        return 0
- 
+        return 0    
+
+    
     
 poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
