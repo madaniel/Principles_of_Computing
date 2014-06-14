@@ -2,7 +2,7 @@
 Clone of 2048 game.
 """
 
-import poc_2048_gui        
+import poc_2048_gui , random as rn
 
 # Directions, DO NOT MODIFY
 UP = 1
@@ -57,36 +57,39 @@ class TwentyFortyEight:
     """
 
     def __init__(self, grid_height, grid_width):
-        # replace with your code
-        pass
+        self.grid = [[]]
+        self.grid_height = grid_height
+        self.grid_width = grid_width
+        self.reset()                
     
     def reset(self):
         """
         Reset the game so the grid is empty.
         """
-        # replace with your code
-        pass
+        self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]        
     
     def __str__(self):
         """
         Return a string representation of the grid for debugging.
         """
-        # replace with your code
-        pass
+        string = ""
+        for row in self.grid:
+            string += str(row)
+            string += "\n"
+            
+        return string    
 
     def get_grid_height(self):
         """
         Get the height of the board.
         """
-        # replace with your code
-        return 0
+        return int(self.grid_height)
     
     def get_grid_width(self):
         """
         Get the width of the board.
-        """
-        # replace with your code
-        return 0
+        """        
+        return int(self.grid_width)
                             
     def move(self, direction):
         """
@@ -102,23 +105,21 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        # replace with your code
-        pass
-        
+        pass        
+            
     def set_tile(self, row, col, value):
         """
         Set the tile at position row, col to have the given value.
         """        
-        # replace with your code
-        pass
+        self.grid[row][col] = value        
 
     def get_tile(self, row, col):
         """
         Return the value of the tile at position row, col.
         """        
-        # replace with your code
-        return 0    
+        return self.grid[row][col]
+    
 
-    
-    
+
+
 poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
