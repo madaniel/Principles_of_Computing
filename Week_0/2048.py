@@ -2,7 +2,7 @@
 Clone of 2048 game.
 """
 
-import poc_2048_gui , random as rn
+import poc_2048_gui , random as rn  
 
 # Directions, DO NOT MODIFY
 UP = 1
@@ -16,7 +16,8 @@ OFFSETS = {UP: (1, 0),
            DOWN: (-1, 0), 
            LEFT: (0, 1), 
            RIGHT: (0, -1)} 
-   
+init_tiles = {}
+
 def merge(line):
     """
     Helper function that merges a single row or column in 2048
@@ -57,16 +58,24 @@ class TwentyFortyEight:
     """
 
     def __init__(self, grid_height, grid_width):
+        global init_tiles
         self.grid = [[]]
         self.grid_height = grid_height
         self.grid_width = grid_width
-        self.reset()                
-    
+        init_tiles = {
+        UP : [ (0 , x) for x in range(self.get_grid_width() ) ] , 
+        DOWN : [ (self.get_grid_height() , x) for x in range( self.get_grid_width() ) ] ,
+        RIGHT : [ (x , self.get_grid_width() ) for x in range( self.get_grid_height() ) ] ,
+        LEFT: [ ( x , 0 ) for x in range(self.get_grid_height())] }
+        self.reset()        
+
     def reset(self):
         """
         Reset the game so the grid is empty.
         """
-        self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]        
+        self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]
+        self.new_tile()
+        self.new_tile()
     
     def __str__(self):
         """
@@ -91,21 +100,47 @@ class TwentyFortyEight:
         """        
         return int(self.grid_width)
                             
-    def move(self, direction):
+    def move(self, direction):        
         """
         Move all tiles in the given direction and add
         a new tile if any tiles moved.
         """
-        # replace with your code
-        pass
+        # temp will be the array copy to send into merge
+        temp = []
+        temp_length = 0
         
+        # calc temp length as width or height of grid
+        if self.get_grid_width() == len( init_tiles[direction] ):
+            temp_length = self.get_grid_height()
+        else:
+            temp_length = self.get_grid_weight()
+
+        # col is the start position to start reading
+        col = init_tiles[direction][0][1]
+        
+        for index in init_tiles[direction]:
+            for row in range(temp_length):
+                temp.append( self.get_tile( row , col ) )
+            col += OFFSETS[direction][0]
+            row += OFFSETS[direction][1]
+            print temp
+            print
+            temp=[]
+
     def new_tile(self):
         """
         Create a new tile in a randomly selected empty 
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        pass        
+        row = rn.randrange(0,self.get_grid_width())                
+        col = rn.randrange(0,self.get_grid_height())        
+        value = rn.choice([2,2,2,2,2,2,2,2,2,4])
+        
+        if self.get_tile(row , col) == 0:
+            self.set_tile(row , col,value)
+        else:
+            self.new_tile()         
             
     def set_tile(self, row, col, value):
         """
@@ -121,5 +156,15 @@ class TwentyFortyEight:
     
 
 
+a = TwentyFortyEight(3,3)
+print a
+#print init_tiles[UP]
+a.move(UP)
 
-poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
+
+
+
+#print a.grid[0]
+
+
+#poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
