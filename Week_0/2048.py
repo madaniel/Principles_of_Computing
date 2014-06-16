@@ -154,15 +154,14 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        col = rn.randrange(0,self.get_grid_width())
-        row = rn.randrange(0,self.get_grid_height())        
+        row = rn.randrange(0,self.get_grid_width())                
+        col = rn.randrange(0,self.get_grid_height())        
         value = rn.choice([2,2,2,2,2,2,2,2,2,4])
         
-        while self.get_tile(row , col) != 0:
-            col = rn.randrange(0,self.get_grid_width())
-            row = rn.randrange(0,self.get_grid_height())
-        
-        self.set_tile(row , col,value)          
+        if self.get_tile(row , col) == 0:
+            self.set_tile(row , col,value)
+        else:
+            self.new_tile()                   
           
         
     def set_tile(self, row, col, value):
