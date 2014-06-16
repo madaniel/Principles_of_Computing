@@ -16,7 +16,8 @@ OFFSETS = {UP: (1, 0),
            DOWN: (-1, 0), 
            LEFT: (0, 1), 
            RIGHT: (0, -1)} 
-init_tiles = {}
+
+INIT_TILES = {}
 
 def merge(line):
     """
@@ -58,22 +59,22 @@ class TwentyFortyEight:
     """
 
     def __init__(self, grid_height, grid_width):
-        global init_tiles
+        global INIT_TILES
         self.grid = [[]]
         self.grid_height = grid_height
-        self.grid_width = grid_width
-        init_tiles = {
-        UP : [ (0 , x) for x in range(grid_width) ] , 
-        DOWN : [ (grid_height - 1 , x) for x in range( grid_width ) ] ,
-        RIGHT : [ (x , grid_width - 1 ) for x in range( grid_height ) ] ,
-        LEFT: [ ( x , 0 ) for x in range(grid_height)] }
+        self.grid_width = grid_width        
+        INIT_TILES = {
+        UP : [ (0 , dummy_x) for dummy_x in range(grid_width) ] , 
+        DOWN : [ (grid_height - 1 , dummy_x) for dummy_x in range( grid_width ) ] ,
+        RIGHT : [ (dummy_x , grid_width - 1 ) for dummy_x in range( grid_height ) ] ,
+        LEFT: [ ( dummy_x , 0 ) for dummy_x in range(grid_height)] }
         self.reset()        
 
     def reset(self):
         """
         Reset the game so the grid is empty.
         """
-        self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]
+        self.grid = [[0 for dummy_x in range(self.grid_width)] for dummy_y in range(self.grid_height)]        
             
     def __str__(self):
         """
@@ -97,7 +98,7 @@ class TwentyFortyEight:
         Get the width of the board.
         """        
         return int(self.grid_width)
-                            
+                
     def move(self, direction):        
         """
         Move all tiles in the given direction and add
@@ -108,7 +109,7 @@ class TwentyFortyEight:
         temp_length = 0
         
         # calc temp length as width or height of grid
-        if self.get_grid_width() == len( init_tiles[direction] ):
+        if self.get_grid_width() == len( INIT_TILES[direction] ):
             temp_length = self.get_grid_height()
         else:
             temp_length = self.get_grid_width()
@@ -124,11 +125,11 @@ class TwentyFortyEight:
         # init_tiles[direction][x][1] = col of point
         
         # This loop walk over the init_tile
-        for cell in init_tiles[direction]:
+        for cell in INIT_TILES[direction]:
             row = cell[0]
             col = cell[1]
             # Collect cells and copy to temp list
-            for temp_tile in range(temp_length):
+            for dummy_temp_tile in range(temp_length):
                 temp.append(self.get_tile(row,col))
                 row += OFFSETS[direction][0]
                 col += OFFSETS[direction][1]
@@ -144,23 +145,26 @@ class TwentyFortyEight:
             temp = []
         
         self.new_tile()
-            
+        
+           
+        
     def new_tile(self):
         """
         Create a new tile in a randomly selected empty 
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        
         col = rn.randrange(0,self.get_grid_width())
-        row = rn.randrange(0,self.get_grid_height())
+        row = rn.randrange(0,self.get_grid_height())        
         value = rn.choice([2,2,2,2,2,2,2,2,2,4])
         
-        if self.get_tile(row , col) == 0:
-            self.set_tile(row , col,value)
-        else:
-            self.new_tile()         
-            
+        while self.get_tile(row , col) != 0:
+            col = rn.randrange(0,self.get_grid_width())
+            row = rn.randrange(0,self.get_grid_height())
+        
+        self.set_tile(row , col,value)          
+          
+        
     def set_tile(self, row, col, value):
         """
         Set the tile at position row, col to have the given value.
