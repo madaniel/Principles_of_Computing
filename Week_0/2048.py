@@ -63,10 +63,10 @@ class TwentyFortyEight:
         self.grid_height = grid_height
         self.grid_width = grid_width
         init_tiles = {
-        UP : [ (0 , x) for x in range(self.get_grid_width() ) ] , 
-        DOWN : [ (self.get_grid_height() , x) for x in range( self.get_grid_width() ) ] ,
-        RIGHT : [ (x , self.get_grid_width() ) for x in range( self.get_grid_height() ) ] ,
-        LEFT: [ ( x , 0 ) for x in range(self.get_grid_height())] }
+        UP : [ (0 , x) for x in range(grid_width) ] , 
+        DOWN : [ (grid_height , x) for x in range( grid_width ) ] ,
+        RIGHT : [ (x , grid_width ) for x in range( grid_height ) ] ,
+        LEFT: [ ( x , 0 ) for x in range(grid_height )] }
         self.reset()        
 
     def reset(self):
@@ -113,19 +113,15 @@ class TwentyFortyEight:
         if self.get_grid_width() == len( init_tiles[direction] ):
             temp_length = self.get_grid_height()
         else:
-            temp_length = self.get_grid_weight()
+            temp_length = self.get_grid_width()
 
-        # col is the start position to start reading
-        col = init_tiles[direction][0][1]
+        # Print 1st temp
+         
+        print init_tiles[direction][0]
+        print init_tiles[direction][0]
         
-        for index in init_tiles[direction]:
-            for row in range(temp_length):
-                temp.append( self.get_tile( row , col ) )
-            col += OFFSETS[direction][0]
-            row += OFFSETS[direction][1]
-            print temp
-            print
-            temp=[]
+        
+       
 
     def new_tile(self):
         """
@@ -133,8 +129,9 @@ class TwentyFortyEight:
         square.  The tile should be 2 90% of the time and
         4 10% of the time.
         """
-        row = rn.randrange(0,self.get_grid_width())                
-        col = rn.randrange(0,self.get_grid_height())        
+        
+        col = rn.randrange(0,self.get_grid_width())
+        row = rn.randrange(0,self.get_grid_height())
         value = rn.choice([2,2,2,2,2,2,2,2,2,4])
         
         if self.get_tile(row , col) == 0:
@@ -156,15 +153,14 @@ class TwentyFortyEight:
     
 
 
-a = TwentyFortyEight(3,3)
+a = TwentyFortyEight(3,2)
 print a
-#print init_tiles[UP]
-a.move(UP)
+
+a.move(DOWN)
 
 
 
 
-#print a.grid[0]
 
 
 #poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
