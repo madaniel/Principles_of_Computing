@@ -64,9 +64,9 @@ class TwentyFortyEight:
         self.grid_width = grid_width
         init_tiles = {
         UP : [ (0 , x) for x in range(grid_width) ] , 
-        DOWN : [ (grid_height , x) for x in range( grid_width ) ] ,
-        RIGHT : [ (x , grid_width ) for x in range( grid_height ) ] ,
-        LEFT: [ ( x , 0 ) for x in range(grid_height )] }
+        DOWN : [ (grid_height - 1 , x) for x in range( grid_width ) ] ,
+        RIGHT : [ (x , grid_width - 1 ) for x in range( grid_height ) ] ,
+        LEFT: [ ( x , 0 ) for x in range(grid_height)] }
         self.reset()        
 
     def reset(self):
@@ -74,9 +74,7 @@ class TwentyFortyEight:
         Reset the game so the grid is empty.
         """
         self.grid = [[0 for x in range(self.grid_width)] for y in range(self.grid_height)]
-        self.new_tile()
-        self.new_tile()
-    
+            
     def __str__(self):
         """
         Return a string representation of the grid for debugging.
@@ -114,15 +112,39 @@ class TwentyFortyEight:
             temp_length = self.get_grid_height()
         else:
             temp_length = self.get_grid_width()
-
-        # Print 1st temp
-         
-        print init_tiles[direction][0]
-        print init_tiles[direction][0]
         
         
-       
-
+        # 1. Take the 1st cell coordinates in init_tiles as start position to start temp scan
+        # 2. Start copying temp from starting coordicates into end of temp
+        # 3. Forward the index on init_tiles to the next cell, take this point and repeat step 2
+        
+        # init_tiles[direction] = array of points
+        # init_tiles[direction][x] = point
+        # init_tiles[direction][x][0] = row of point
+        # init_tiles[direction][x][1] = col of point
+        
+        # This loop walk over the init_tile
+        for cell in init_tiles[direction]:
+            row = cell[0]
+            col = cell[1]
+            # Collect cells and copy to temp list
+            for temp_tile in range(temp_length):
+                temp.append(self.get_tile(row,col))
+                row += OFFSETS[direction][0]
+                col += OFFSETS[direction][1]
+            temp = merge(temp)            
+            # Set the tiles on the grid
+            row = cell[0]
+            col = cell[1]
+            
+            for number in temp:                
+                self.set_tile(row,col,number)
+                row += OFFSETS[direction][0]
+                col += OFFSETS[direction][1]
+            temp = []
+        
+        self.new_tile()
+            
     def new_tile(self):
         """
         Create a new tile in a randomly selected empty 
@@ -152,15 +174,4 @@ class TwentyFortyEight:
         return self.grid[row][col]
     
 
-
-a = TwentyFortyEight(3,2)
-print a
-
-a.move(DOWN)
-
-
-
-
-
-
-#poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
+poc_2048_gui.run_gui(TwentyFortyEight(4, 4))
