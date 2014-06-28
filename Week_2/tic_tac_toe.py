@@ -113,15 +113,22 @@ def get_best_move(board, scores):
                 col_temp = col
                 row_temp = row
     return (row_temp,col_temp)
-                
     
 def mc_move(board, player, trials):
-    pass
     """
     The function should use the Monte Carlo simulation described above
     to return a move for the machine player in the form of a (row, column) tuple.
     Be sure to use the other functions you have written! 
     """
+    dim = board.get_dim()
+	scores = [[0 for i in range(dim)] for j in range(dim)]
+	
+	for i in range(trials):        
+        test_board = player.clone()
+		mc_trial (test_board , player)
+        mc_update_scores(scores , test_board , player)     
+	
+	return get_best_move(board, scores)
 
 # Test game with the console or the GUI.
 # Uncomment whichever you prefer.
