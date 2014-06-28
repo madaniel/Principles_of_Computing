@@ -14,13 +14,16 @@ MCOTHER = 1.0  # Score for squares played by the other player
     
 # Add your functions here.
 def run():
-    a = provided.TTTBoard(3)
     scores = [[0 for i in range(3)] for j in range(3)]
-    mc_trial (a , provided.PLAYERX)
-    print a
-    mc_update_scores(scores , a , provided.PLAYERO)
-    print scores
     
+    for i in range(100):
+        a = provided.TTTBoard(3)    
+        mc_trial (a , provided.PLAYERX)    
+        mc_update_scores(scores , a , provided.PLAYERO)
+    a = provided.TTTBoard(3)        
+ 
+    #print get_best_move(a ,scores)
+       
 def next_random_move(board):
     if board.check_win() == None:
         return random.choice( board.get_empty_squares() )
@@ -88,13 +91,30 @@ def mc_update_scores(scores, board, player):
                     scores[row][col] += MCOTHER
     
 def get_best_move(board, scores):
-    pass
     """ 
     The function should find all of the empty squares with the maximum score
     and randomly return one of them as a (row, column) tuple.
     Ignore when the board has no empty squares.
     """
-
+    if board.check_win() != None or not board.get_empty_squares():
+        return
+    
+    dim = board.get_dim()
+    max_score = -1
+    col_temp = -1
+    row_temp = -1
+    
+    for row in range( dim ):
+        for col in range( dim ):
+            if board.square(row , col) != provided.EMPTY:
+                continue
+            if scores[row][col] > max_score:
+                max_score = scores[row][col]
+                col_temp = col
+                row_temp = row
+    return (row_temp,col_temp)
+                
+    
 def mc_move(board, player, trials):
     pass
     """
