@@ -15,11 +15,12 @@ MCOTHER = 1.0  # Score for squares played by the other player
 # Add your functions here.
 def run():
     a = provided.TTTBoard(3)
-	mc_trial (a , provided.PLAYERX)
-	print a
-        
+    scores = [[0 for i in range(3)] for j in range(3)]
+    mc_trial (a , provided.PLAYERX)
+    print a
+    mc_update_scores(scores , a , provided.PLAYERO)
+    print scores
     
-            
 def next_random_move(board):
     if board.check_win() == None:
         return random.choice( board.get_empty_squares() )
@@ -33,20 +34,58 @@ def mc_trial(board, player):
     The modified board will contain the state of the game, so the function does not return anything.
     In other words, the function should modify the board input.
     """
-	next_move = next_random_move(board)
-	
-	while next_move:        
-		a.move(next_move[0],next_move[1],player)
-		next_move = next_random_move(board)
+    # player is the starter
+    next_move = next_random_move(board)
+    
+    while next_move:
+        board.move(next_move[0],next_move[1],player)
+        next_move = next_random_move(board)
         player = provided.switch_player(player)
 
 def mc_update_scores(scores, board, player):
-    pass
     """
     This function takes a board from a completed game, and which player the machine player is.
     The function should score the completed board and update the scores grid.
     As the function updates the scores grid directly, it does not return anything,
+    If you won the game, each square that matches your player should get a positive score (MCMATCH)
+    and each square that matches the other player should get a negative score (-MCOTHER).
+    Conversely, if you lost the game, each square that matches your player should get a negative score (-MCMATCH)
+    and and each square that matches the other player should get a positive score (MCOTHER).
+    All empty squares should get a score of 0.
     """
+    dim = board.get_dim()
+    machine = player
+    user = provided.switch_player(player)
+    
+    if board.check_win() == provided.DRAW:
+        for row in range( dim ):
+            for col in range( dim ):
+                scores[row][col] = 0
+        return
+        
+    if board.check_win() == machine:
+        for row in range( dim ):
+            for col in range( dim ):
+                status = board.square(row ,col)
+                
+                if status == provided.EMPTY:
+                    scores[row][col] = 0
+                elif status == machine:
+                    scores[row][col] += MCMATCH
+                elif status == user:
+                    scores[row][col] -= MCOTHER
+    
+    if board.check_win() == user:
+        for row in range( dim ):
+            for col in range( dim ):
+                status = board.square(row ,col)
+                
+                if status == provided.EMPTY:
+                    scores[row][col] = 0
+                elif status == machine:
+                    scores[row][col] -= MCMATCH
+                elif status == user:
+                    scores[row][col] += MCOTHER
     
 def get_best_move(board, scores):
     pass
@@ -63,7 +102,6 @@ def mc_move(board, player, trials):
     to return a move for the machine player in the form of a (row, column) tuple.
     Be sure to use the other functions you have written! 
     """
-
 
 # Test game with the console or the GUI.
 # Uncomment whichever you prefer.
