@@ -13,18 +13,11 @@ MCMATCH = 1.0  # Score for squares played by the machine player
 MCOTHER = 1.0  # Score for squares played by the other player
     
 # Add your functions here.
-def run():
-    scores = [[0 for i in range(3)] for j in range(3)]
-    
-    for i in range(100):
-        a = provided.TTTBoard(3)    
-        mc_trial (a , provided.PLAYERX)    
-        mc_update_scores(scores , a , provided.PLAYERO)
-    a = provided.TTTBoard(3)        
- 
-    #print get_best_move(a ,scores)
        
 def next_random_move(board):
+    """
+    Returns the next move on empty squere
+    """
     if board.check_win() == None:
         return random.choice( board.get_empty_squares() )
     else:
@@ -61,9 +54,9 @@ def mc_update_scores(scores, board, player):
     user = provided.switch_player(player)
     
     if board.check_win() == provided.DRAW:
-        for row in range( dim ):
-            for col in range( dim ):
-                scores[row][col] = 0
+        #for row in range( dim ):
+        #    for col in range( dim ):
+        #        scores[row][col] = 0
         return
         
     if board.check_win() == machine:
@@ -71,9 +64,7 @@ def mc_update_scores(scores, board, player):
             for col in range( dim ):
                 status = board.square(row ,col)
                 
-                if status == provided.EMPTY:
-                    scores[row][col] = 0
-                elif status == machine:
+                if status == machine:
                     scores[row][col] += MCMATCH
                 elif status == user:
                     scores[row][col] -= MCOTHER
@@ -81,11 +72,8 @@ def mc_update_scores(scores, board, player):
     if board.check_win() == user:
         for row in range( dim ):
             for col in range( dim ):
-                status = board.square(row ,col)
-                
-                if status == provided.EMPTY:
-                    scores[row][col] = 0
-                elif status == machine:
+                status = board.square(row ,col)                
+                if status == machine:
                     scores[row][col] -= MCMATCH
                 elif status == user:
                     scores[row][col] += MCOTHER
@@ -100,9 +88,8 @@ def get_best_move(board, scores):
         return
     
     dim = board.get_dim()
-    max_score = -1
-    col_temp = -1
-    row_temp = -1
+    max_score = -1    
+    result = set()
     
     for row in range( dim ):
         for col in range( dim ):
@@ -110,9 +97,13 @@ def get_best_move(board, scores):
                 continue
             if scores[row][col] > max_score:
                 max_score = scores[row][col]
-                col_temp = col
-                row_temp = row
-    return (row_temp,col_temp)
+                result = set()	
+                result.add((row , col))
+            elif scores[row][col] == max_score:
+                result.add((row , col))
+            
+    return result.pop()
+
     
 def mc_move(board, player, trials):
     """
@@ -121,14 +112,14 @@ def mc_move(board, player, trials):
     Be sure to use the other functions you have written! 
     """
     dim = board.get_dim()
-	scores = [[0 for i in range(dim)] for j in range(dim)]
-	
-	for i in range(trials):        
-        test_board = player.clone()
-		mc_trial (test_board , player)
+    scores = [[0 for dummy_i in range(dim)] for dummy_j in range(dim)]
+    
+    for dummy_i in range(trials):        
+        test_board = board.clone()
+        mc_trial (test_board , player)
         mc_update_scores(scores , test_board , player)     
-	
-	return get_best_move(board, scores)
+    
+    return get_best_move(board, scores)
 
 # Test game with the console or the GUI.
 # Uncomment whichever you prefer.
@@ -139,3 +130,11 @@ def mc_move(board, player, trials):
 #poc_ttt_gui.run_gui(3, provided.PLAYERX, mc_move, NTRIALS, False)
 
 #run()
+
+# Test suite for individual functions
+#import user34_Uc9ea2tRiN_0 as test_ttt
+#test_ttt.test_trial(mc_trial)
+# print
+#test_ttt.test_update_scores(mc_update_scores, MCMATCH, MCOTHER)
+# print
+#test_ttt.test_best_move(get_best_move)
