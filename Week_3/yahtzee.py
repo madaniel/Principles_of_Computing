@@ -12,7 +12,6 @@ def gen_all_sequences(outcomes, length):
     Iterative function that enumerates the set of all sequences of
     outcomes of given length.
     """
-    
     answer_set = set([()])
     for dummy_idx in range(length):
         temp_set = set()
@@ -52,19 +51,31 @@ def score(hand):
     return max(results)
 
 
-def expected_value(held_dice, num_die_sides, num_free_dice):
+def expected_value(held_dice, num_die_sides , num_free_dice):
     """
     Compute the expected value of the held_dice given that there
     are num_free_dice to be rolled, each with num_die_sides.
+    You should use gen_all_sequences to compute all possible rolls for the dice being rolled.
 
     held_dice: dice that you will hold
+    The dice being held are specified by the tuple held_dice
+    
     num_die_sides: number of sides on each die
     num_free_dice: number of dice to be rolled
 
-    Returns a floating point expected value
+    Returns a floating point expected value		
     """
-    return 0.0
-
+    total_score = 0
+    result = 0
+    
+    sequences = gen_all_sequences( set(i for i in range(1 , 7) ), num_free_dice)
+    
+    for item in sequences:
+        total_score += score(held_dice + item)
+          
+    result = total_score / float( len(sequences) )
+    return result
+        
 
 def gen_all_holds(hand):
     """
@@ -75,8 +86,6 @@ def gen_all_holds(hand):
     Returns a set of tuples, where each tuple is dice to hold
     """
     return set([()])
-
-
 
 def strategy(hand, num_die_sides):
     """
@@ -90,7 +99,6 @@ def strategy(hand, num_die_sides):
     the second element is a tuple of the dice to hold
     """
     return (0.0, ())
-
 
 def run_example():
     """
@@ -111,8 +119,6 @@ def run_example():
 #import user35_oGFuhcPNLh_0 as score_testsuite
 #score_testsuite.run_suite(score)
     
-    
-    
-
-
+#import user35_uLOFnLQSJV29rFh_5 as expected_value_testsuite
+#expected_value_testsuite.run_suite(expected_value)
 
