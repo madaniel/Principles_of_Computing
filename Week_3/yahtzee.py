@@ -85,7 +85,18 @@ def gen_all_holds(hand):
 
     Returns a set of tuples, where each tuple is dice to hold
     """
-    return set([()])
+            
+    answer_set = set([()])
+    copy = set([()])
+    
+    for item in hand:
+        for partial_sequence in answer_set:
+            new_sequence = list(partial_sequence)
+            new_sequence.append(item)
+            copy.add(tuple(new_sequence))
+        answer_set = set(copy)
+    return answer_set
+    
 
 def strategy(hand, num_die_sides):
     """
