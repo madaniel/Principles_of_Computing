@@ -55,39 +55,41 @@ class Zombie(poc_grid.Grid):
         """
         Add zombie to the zombie list
         """
-        pass
+        self._zombie_list.append((row , col))
                 
     def num_zombies(self):
         """
         Return number of zombies
         """
-        return 0       
-          
+        return len(self._zombie_list)
+		          
     def zombies(self):
         """
         Generator that yields the zombies in the order they were
         added.
         """
-        # replace with an actual generator
+        for zombie in self._zombie_list:
+			yield zombie
         return
 
     def add_human(self, row, col):
         """
         Add human to the human list
         """
-        pass
+        self._human_list.append((row , col))
         
     def num_humans(self):
         """
         Return number of humans
         """
-        return 0
+        return len(self._human_list)
     
     def humans(self):
         """
         Generator that yields the humans in the order they were added.
         """
-        # replace with an actual generator
+        for human in self._human_list:
+			yield human
         return
         
     def compute_distance_field(self, entity_type):
