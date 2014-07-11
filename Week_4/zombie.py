@@ -47,7 +47,9 @@ class Zombie(poc_grid.Grid):
         Set cells in obstacle grid to be empty
         Reset zombie and human lists to be empty
         """
-        pass
+        self._zombie_list = []
+        self._human_list = []
+        poc_grid.Grid.clear(self)
         
     def add_zombie(self, row, col):
         """
