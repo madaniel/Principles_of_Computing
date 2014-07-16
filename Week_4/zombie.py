@@ -136,8 +136,6 @@ class Zombie(poc_grid.Grid):
                     
                     boundary.enqueue(neighbor)
             
-        #for row in distance_field:
-         #   print row
         return distance_field
     
     def move_humans(self, zombie_distance):
@@ -145,19 +143,68 @@ class Zombie(poc_grid.Grid):
         Function that moves humans away from zombies, diagonal moves
         are allowed
         """
-        pass
-    
+        # 1. Scan all applicable neighbours for each human.
+        # 2. Find to maximum distance cell to move to
+        # 3. Append this position to a temp list
+        # 4. set the humans list to be the temp list
+        
+        temp_humans_list = []
+        
+        for human in self.humans():
+            max_position = human
+            current_distance = zombie_distance[ human[0] ] [ human[1] ]
+            maximum_distance = current_distance
+            
+            neighbors = self.eight_neighbors(human[0], human[1])
+            # find the maximum distance, if exists
+            for neighbor in neighbors:
+                if self.is_empty(neighbor[0] , neighbor[1]) and zombie_distance [ neighbor[0] ] [ neighbor[1] ] > maximum_distance :
+                    maximum_distance = zombie_distance [ neighbor[0] ] [ neighbor[1] ]
+                    max_position = (neighbor[0] , neighbor[1] )
+                                
+            # save the new / current position of human
+            temp_humans_list.append(max_position)
+            
+            # update the grid
+            #if max_position != human:
+            #	self.set_full(max_position[0] , max_position[1])
+            #	self.set_empty(human[0] , human[1])
+        
+        self._human_list = temp_humans_list
+                    
     def move_zombies(self, human_distance):
         """
         Function that moves zombies towards humans, no diagonal moves
         are allowed
         """
-        pass
+        temp_zombies_list = []
+        
+        for zombie in self.zombies():
+            min_position = zombie
+            current_distance = human_distance[ zombie[0] ] [ zombie[1] ]
+            minimum_distance = current_distance
+            
+            neighbors = self.four_neighbors(zombie[0], zombie[1])
+            # find the minimum distance, if exists
+            for neighbor in neighbors:
+                if self.is_empty(neighbor[0] , neighbor[1]) and human_distance [ neighbor[0] ] [ neighbor[1] ] < minimum_distance :
+                    minimum_distance = human_distance [ neighbor[0] ] [ neighbor[1] ]
+                    min_position = (neighbor[0] , neighbor[1] )
+                                
+            # save the new / current position of human
+            temp_zombies_list.append(min_position)
+            
+            # update the grid
+            #if max_position != human:
+            #	self.set_full(max_position[0] , max_position[1])
+            #	self.set_empty(human[0] , human[1])
+        
+        self._zombie_list = temp_zombies_list
 
 # Start up gui for simulation - You will need to write some code above
 # before this will work without errors
 
-#poc_zombie_gui.run_gui(Zombie(30, 40))
+poc_zombie_gui.run_gui(Zombie(30, 40))
 
 
 
