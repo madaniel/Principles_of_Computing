@@ -25,9 +25,9 @@ def remove_duplicates(list1):
     if len (list1) < 2:
         return list1
     
-    for i in range( len(list1) - 1 ):
-        if list1[i] != list1[i+1]:
-            temp.append(list1[i])
+    for idx in range( len(list1) - 1 ):
+        if list1[idx] != list1[idx+1]:
+            temp.append(list1[idx])
             
     if list1[-1] not in temp:
         temp.append(list1[-1])
@@ -46,15 +46,15 @@ def intersect(list1, list2):
     temp = []
         
     if len(list1) < len(list2):
-        short = list1
-        long = list2
+        short_list = list1
+        long_list = list2
     else:
-        short = list2
-        long = list1
+        short_list = list2
+        long_list = list1
         
-    for i in range(len(short) ):
-        if short[i] in long:
-            temp.append(short[i])
+    for idx in range(len(short_list) ):
+        if short_list[idx] in long_list:
+            temp.append(short_list[idx])
     return temp
 
 # Functions to perform merge sort
@@ -71,24 +71,24 @@ def merge(list1, list2):
     temp = []
            
     if len(list1) < len(list2):
-        short = list(list1)
-        long = list(list2)
+        short_list = list(list1)
+        long_list = list(list2)
     else:
-        short = list(list2)
-        long = list(list1)
+        short_list = list(list2)
+        long_list = list(list1)
     
-    while len(short) > 0 and len(long) > 0:
-        if short[0] < long[0]:
-            temp.append(short.pop(0))
+    while len(short_list) > 0 and len(long_list) > 0:
+        if short_list[0] < long_list[0]:
+            temp.append(short_list.pop(0))
         else:
-            temp.append(long.pop(0))
+            temp.append(long_list.pop(0))
     
   
-    while len(short) > 0:
-        temp.append(short.pop(0))
+    while len(short_list) > 0:
+        temp.append(short_list.pop(0))
     
-    while len(long) > 0:
-        temp.append(long.pop(0))
+    while len(long_list) > 0:
+        temp.append(long_list.pop(0))
         
         
     
@@ -103,7 +103,11 @@ def merge_sort(list1):
 
     This function should be recursive.
     """
-    return []
+    if len(list1) <= 1:
+        return list1
+    else:
+        mid = int(len(list1) / 2)
+        return merge(merge_sort(list1[:mid]),merge_sort(list1[mid:]))
 
 # Function to generate all strings for the word wrangler game
 
@@ -143,12 +147,12 @@ def run():
 # run()
 
 
-import user36_YSYfr6I5AWFWCqN_0 as week5_tests
+#import user36_YSYfr6I5AWFWCqN_0 as week5_tests
 #week5_tests.test_remove_duplicates(remove_duplicates)
 #week5_tests.test_intersect(intersect)
 #week5_tests.test_merge(merge)
 #week5_tests.test_merge_sort(merge_sort)
-    
+
 
 
 
