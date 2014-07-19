@@ -68,7 +68,32 @@ def merge(list1, list2):
 
     This function can be iterative.
     """   
-    return []
+    temp = []
+           
+    if len(list1) < len(list2):
+        short = list(list1)
+        long = list(list2)
+    else:
+        short = list(list2)
+        long = list(list1)
+    
+    while len(short) > 0 and len(long) > 0:
+        if short[0] < long[0]:
+            temp.append(short.pop(0))
+        else:
+            temp.append(long.pop(0))
+    
+  
+    while len(short) > 0:
+        temp.append(short.pop(0))
+    
+    while len(long) > 0:
+        temp.append(long.pop(0))
+        
+        
+    
+        
+    return temp
                 
 def merge_sort(list1):
     """
@@ -118,10 +143,12 @@ def run():
 # run()
 
 
-#import user36_YSYfr6I5AWFWCqN_0 as week5_tests
+import user36_YSYfr6I5AWFWCqN_0 as week5_tests
 #week5_tests.test_remove_duplicates(remove_duplicates)
 #week5_tests.test_intersect(intersect)
 #week5_tests.test_merge(merge)
 #week5_tests.test_merge_sort(merge_sort)
     
-    
+
+
+
