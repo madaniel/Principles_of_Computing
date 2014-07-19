@@ -20,7 +20,19 @@ def remove_duplicates(list1):
 
     This function can be iterative.
     """
-    return []
+    temp = []
+    
+    if len (list1) < 2:
+        return list1
+    
+    for i in range( len(list1) - 1 ):
+        if list1[i] != list1[i+1]:
+            temp.append(list1[i])
+            
+    if list1[-1] not in temp:
+        temp.append(list1[-1])
+                
+    return temp
 
 def intersect(list1, list2):
     """
@@ -93,5 +105,11 @@ def run():
 # Uncomment when you are ready to try the game
 # run()
 
+
+import user36_YSYfr6I5AWFWCqN_0 as week5_tests
+#week5_tests.test_remove_duplicates(remove_duplicates)
+#week5_tests.test_intersect(intersect)
+#week5_tests.test_merge(merge)
+#week5_tests.test_merge_sort(merge_sort)
     
     
