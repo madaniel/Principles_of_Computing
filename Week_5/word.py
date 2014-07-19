@@ -43,7 +43,19 @@ def intersect(list1, list2):
 
     This function can be iterative.
     """
-    return []
+    temp = []
+        
+    if len(list1) < len(list2):
+        short = list1
+        long = list2
+    else:
+        short = list2
+        long = list1
+        
+    for i in range(len(short) ):
+        if short[i] in long:
+            temp.append(short[i])
+    return temp
 
 # Functions to perform merge sort
 
@@ -106,7 +118,7 @@ def run():
 # run()
 
 
-import user36_YSYfr6I5AWFWCqN_0 as week5_tests
+#import user36_YSYfr6I5AWFWCqN_0 as week5_tests
 #week5_tests.test_remove_duplicates(remove_duplicates)
 #week5_tests.test_intersect(intersect)
 #week5_tests.test_merge(merge)
