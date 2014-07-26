@@ -121,7 +121,22 @@ def gen_all_strings(word):
 
     This function should be recursive.
     """
-    return []
+    if len(word) < 1:
+        return [""]
+    
+    first = word[0]    
+    rest = word[1:]  
+
+    rest_strings = gen_all_strings(rest)    
+    copy_list = list(rest_strings)
+    for item in rest_strings:
+        if (len(item) == 0):
+            copy_list.append(first)
+        else:
+            for idx in range( len(item)+1):
+                copy_list.append(item[:idx] + first + item[idx:])
+               
+    return copy_list
 
 # Function to load words from a file
 
@@ -153,6 +168,18 @@ def run():
 #week5_tests.test_merge(merge)
 #week5_tests.test_merge_sort(merge_sort)
 
+#import user36_FF1tf9hk4VlRZ82 as testsuite
+
+#testsuite.run_test1(remove_duplicates)
+#testsuite.run_test2(intersect)
+#testsuite.run_test3(merge)
+#testsuite.run_test4(merge_sort)
+#testsuite.run_test5(gen_all_strings)
+
+#testsuite.run_all(remove_duplicates, intersect, merge, merge_sort, gen_all_strings)
+
+
+#print gen_all_strings("abc")
 
 
 
