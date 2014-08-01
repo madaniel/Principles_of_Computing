@@ -22,10 +22,59 @@ def mm_move(board, player):
     of the given board and the second element is the desired move as a
     tuple, (row, col).
     """
+    moves = []
+    results = []
+    best_score = None
+    best_move = None
+    
+    opponet = op_player(player)
+    
+    if board.check_win() != None:
+        
+        if board.check_win() == provided.PLAYERX:
+            return SCORES[provided.PLAYERX] , (-1, -1)
+        
+        if board.check_win() == provided.PLAYERO:
+            return SCORES[provided.PLAYERO] , (-1, -1)
+        
+        if board.check_win() == provided.DRAW:
+            return SCORES[provided.DRAW] , (-1, -1)
+    
+    free_steps = board.get_empty_squares()
+    
+    for step in free_steps:
+        clone = board.clone()        
+        clone.move(step[0],step[1],player)
+        temp = mm_move(clone,opponet)
+        
+        if temp != None:
+            if temp[0] == SCORES[player]:                
+                return temp[0] , step                
+            else:                
+                results.append(temp)
+                moves.append(step)
+                
+    for result, move in zip(results, moves):        
+        if result[0] * SCORES[player] > best_score:
+            best_score = result[0]
+            best_move = move
+    return best_score, best_move
+        
+        
+         
+         
+
     
     
-    return 0, (-1, -1)
     
+
+
+    
+def op_player(player):
+    if player == provided.PLAYERX:
+        return provided.PLAYERO
+    else:
+        return provided.PLAYERX
 
 def move_wrapper(board, player, trials):
     """
@@ -44,11 +93,11 @@ def move_wrapper(board, player, trials):
 # provided.play_game(move_wrapper, 1, False)        
 #poc_ttt_gui.run_gui(3, provided.PLAYERO, move_wrapper, 1, False)
 
-board = provided.TTTBoard(3)
-board.move(1,0,provided.PLAYERO)
-board.move(0,0,provided.PLAYERO)
-board.move(0,1,provided.PLAYERX)
-board.move(1,1,provided.PLAYERX)
-board.move(2,1,provided.PLAYERO)
-board.move(2,2,provided.PLAYERX)
-print board
+
+
+
+
+
+#print mm_move(board,provided.PLAYERX)
+#mm_move(board, provided.PLAYERO)
+
